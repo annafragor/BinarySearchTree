@@ -10,7 +10,6 @@ public:
         Node* left;
         Node* right;
         T value;
-
         friend class BinarySearchTree;
 
         Node(T value_) : value(value_), left(nullptr), right(nullptr) {}
@@ -26,32 +25,35 @@ public:
             }
             return out;
         }
+
+        ~Node() {
+            if (this->left)
+                delete this->left;
+            if (this->right)
+                delete this->right;
+        }
     };
 
     BinarySearchTree() : root(nullptr), size_(0) {}
     BinarySearchTree(const std::initializer_list<T>& list) : size_(list.size()), root(nullptr) {
-        Node* thisNode = nullptr;
         for (auto it = list.begin(); it != list.end(); ++it)
-        {
-            if (it == list.begin())
-                root = new Node(*it);
-            else
-                insert(*it);
-        }
+            insert(*it);
     }
 
     auto size() const noexcept -> size_t { return size_; }
 
     auto insert(const T& value) noexcept -> bool {
         bool foundPlace = false;
-        Node* thisNode = root;
-        if (thisNode == nullptr) {
+        if (find(value))
+            return foundPlace;
+        if (root == nullptr) {
             root = new Node(value);
             return true;
         }
+        Node* thisNode = root;
         while (!foundPlace)
         {
-            if (value <= thisNode->value) {
+            if (value < thisNode->value) {
                 if (!thisNode->left) {
                     thisNode->left = new Node(value);
                     foundPlace = true;
@@ -68,26 +70,25 @@ public:
         return foundPlace;
     }
 
-    auto find(const T& value) const noexcept -> const Node* {
+    auto find(const T& value) const noexcept -> const T* {
+        if (!root)
+            return nullptr;
         Node* thisNode = root;
         while(1)
         {
             if (value == thisNode->value) {
-                std::cout << "such value as " << value << " was found." << std::endl;
-                return thisNode;
+                return &thisNode->value;
             }
             else if (value < thisNode->value)
                 if (thisNode->left)
                     thisNode = thisNode->left;
                 else {
-                    std::cout << "such value as " << value << " wasn't found." << std::endl;
                     return nullptr;
                 }
             else {
                 if (thisNode->right)
                     thisNode = thisNode->right;
                 else {
-                    std::cout << "such value as " << value << " wasn't found." << std::endl;
                     return nullptr;
                 }
             }
@@ -98,14 +99,13 @@ public:
         if (tree.root)
             out << tree.root;
         else
-            std::cout << "tree is empty\n";
+            out << "tree is empty\n";
         return out;
     }
 
     friend std::istream& operator >> (std::istream& in, BinarySearchTree<T>& tree) { /*ввод*/
-        int n;
-        in >> n; /*cчитываем количество элементов дерева*/
-        std::cout << n << std::endl;
+        int n = 1;
+        in >> n; //cчитываем количество элементов
         for (int i = 0; i < n; i++)
         {
             T value;
@@ -115,43 +115,44 @@ public:
         return in;
     }
 
-    ~BinarySearchTree() {}
+    ~BinarySearchTree() {
+        delete root;
+    }
+
 private:
     size_t size_;
     Node* root;
 };
 
-void clearFile(const char* filename)
-{
-    std::fstream clear_file(filename, std::ios::out);
-    clear_file.close();
-    return;
-}
-
-int main() { /*проверка работы функций и методов*/
-    auto a = {4, 2, 3, 5, 1}; //a - std::initializer_list<int>
+int main() {
+    auto a = {4, 2, 3, 5, 1}; //a - std::initializer_list<int>]
     BinarySearchTree<int> b(a);
 
-    b.find(5);                          //such value as 5 was found.
-    b.find(8);                          //such value as 8 wasn't found.
-    std::cout << b << std::endl;        //4 2 1 3 5
-    b.insert(10);
+    if(b.find(5))
+        std::cout << "such value as 5 was found.\n";
+    if(b.find(8))
+        std::cout << "such value as 8 was found.\n"; //не выводит, тк значение 8 не найдено
+
+    std::cout << b << std::endl; //4 2 1 3 5
+    if (b.insert(4))
+        std::cout << "4 was inserted\n"; //не выводит, тк элемент 4 уже есть
+    if (b.insert(10))
+        std::cout << "10 was inserted\n";
     std::cout << b << std::endl;        //4 2 1 3 5 10
 
     BinarySearchTree<int> bin;
     std::cin >> bin;                    //проверка потокового ввода
 
-    clearFile("D://!BMSTU//Programming//3semester//BinTree//file.txt");
-    std::fstream f;
-    f.open("D://!BMSTU//Programming//3semester//BinTree//file.txt");
+    std::fstream f("D://!BMSTU//Programming//3semester//BinTree//file.txt", std::ios::out); //открываем и очищаем файл
     if (!f.is_open())
     { std::cout << "can't open the file"; return 0; }
-    f << bin;                           //прoверка файлового вывода
+    f << bin; //прoверка файлового вывода
 
     BinarySearchTree<int> bout;
-    std::cout << "in from file ";
-    f.seekg(0, std::ios::beg);
-    f >> bout;                          //прoверка файлового ввода
     f.close();
+    f.open("D://!BMSTU//Programming//3semester//BinTree//file.txt", std::ios::in);
+    f.seekg(0, std::ios::beg);
+    f >> bout; //прoверка файлового ввода
+    std::cout << "read from file: " << bout; //просмотр того, что считалось из файла
     return 0;
 }
