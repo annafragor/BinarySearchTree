@@ -1,10 +1,9 @@
 #include <iostream>
-//для size_t
-#include <cstring>
+#include <cstring> //для size_t
 #include <fstream>
 
 template <typename T>
-class BinarySearchTree /*упорядоченное дерево*/ {
+class BinarySearchTree {
 public:
     struct Node {
         Node* left;
@@ -16,13 +15,11 @@ public:
 
         friend std::ostream& operator << (std::ostream& out, const Node* node)
         {
-            out << node->value; out << " ";
-            if (node->left) {
-                out << node->left;
-            }
-            if (node->right) {
-                out << node->right;
-            }
+            out << node->value;
+            if (node->left)
+                out << "\nleft from " << node->value << ": " << node->left;
+            if (node->right)
+                out << "\nright from " << node->value << ": " << node->right;
             return out;
         }
 
@@ -42,6 +39,13 @@ public:
 
     auto size() const noexcept -> size_t { return size_; }
 
+    bool empty() const{
+        if (size())
+            return false;
+        else
+            return true;
+    }
+
     auto insert(const T& value) noexcept -> bool {
         bool foundPlace = false;
         if (find(value))
@@ -57,13 +61,12 @@ public:
                 if (!thisNode->left) {
                     thisNode->left = new Node(value);
                     foundPlace = true;
-                }else
+                } else
                     thisNode = thisNode->left;
-            } else
-            if (!thisNode->right) {
+            } else if (!thisNode->right) {
                 thisNode->right = new Node(value);
                 foundPlace = true;
-            }else
+            } else
                 thisNode = thisNode->right;
         }
         size_++;
@@ -88,18 +91,15 @@ public:
             else {
                 if (thisNode->right)
                     thisNode = thisNode->right;
-                else {
+                else
                     return nullptr;
-                }
             }
         }
     }
 
     friend std::ostream& operator << (std::ostream& out, const BinarySearchTree<T>& tree){ /*вывод*/
         if (tree.root)
-            out << tree.root;
-        else
-            out << "tree is empty\n";
+            out << "root: " << tree.root;
         return out;
     }
 
@@ -115,9 +115,7 @@ public:
         return in;
     }
 
-    ~BinarySearchTree() {
-        delete root;
-    }
+    ~BinarySearchTree() { delete root; }
 
 private:
     size_t size_;
@@ -129,30 +127,39 @@ int main() {
     BinarySearchTree<int> b(a);
 
     if(b.find(5))
-        std::cout << "such value as 5 was found.\n";
+        std::cout << "such value as 5 was found." << std::endl;
     if(b.find(8))
-        std::cout << "such value as 8 was found.\n"; //не выводит, тк значение 8 не найдено
+        std::cout << "such value as 8 was found." << std::endl; //such value as 8 wasn't found.
 
-    std::cout << b << std::endl; //4 2 1 3 5
+    std::cout << b << std::endl;
+
     if (b.insert(4))
-        std::cout << "4 was inserted\n"; //не выводит, тк элемент 4 уже есть
+        std::cout << "4 was inserted" << std::endl; //не выводит, тк элемент 4 уже есть
     if (b.insert(10))
-        std::cout << "10 was inserted\n";
-    std::cout << b << std::endl;        //4 2 1 3 5 10
+        std::cout << "10 was inserted" << std::endl;
+
+    std::cout << b << std::endl;
 
     BinarySearchTree<int> bin;
-    std::cin >> bin;                    //проверка потокового ввода
+    std::cin >> bin; //проверка потокового ввода
 
     std::fstream f("D://!BMSTU//Programming//3semester//BinTree//file.txt", std::ios::out); //открываем и очищаем файл
     if (!f.is_open())
-    { std::cout << "can't open the file"; return 0; }
-    f << bin; //прoверка файлового вывода
+    { std::cout << "can't open the file" << std::endl; return 0; }
+    if (bin.empty())
+        f << "tree is empty.";
+    else
+        f << bin; //прoверка файлового вывода
 
     BinarySearchTree<int> bout;
     f.close();
-    f.open("D://!BMSTU//Programming//3semester//BinTree//file.txt", std::ios::in);
+    f.open("D://!BMSTU//Programming//3semester//BinTree//file2.txt", std::ios::in);
     f.seekg(0, std::ios::beg);
     f >> bout; //прoверка файлового ввода
-    std::cout << "read from file: " << bout; //просмотр того, что считалось из файла
+    std::cout << "read from file: "; // bout; //просмотр того, что считалось из файла
+    if (bout.empty())
+        std::cout << "tree is empty.";
+    else
+        std::cout << bout;
     return 0;
 }
