@@ -19,15 +19,25 @@ public:
 
         Node(T value_) : value(value_), left(nullptr), right(nullptr) {}
 
-        friend std::ostream& operator << (std::ostream& out, const Node* node)
-        {
-            out << node->value;
+        friend auto operator << (std::ofstream& out, const Node* node) -> std::ofstream&{
+            out << node->value << " ";
             if (node->left)
-                out << "\nleft from " << node->value << ": " << node->left;
+                out << node->left;
             if (node->right)
-                out << "\nright from " << node->value << ": " << node->right;
+                out << node->right;
             return out;
         }
+
+        friend auto operator << (std::ostream& out, const Node* node) -> std::ostream& {
+            if (node->right)
+                out << node->right;
+            out << node->value << " ";
+            if (node->left)
+                out << node->left;
+            return out;
+        }
+
+
 
         ~Node() {
             if (this->left)
@@ -39,29 +49,62 @@ public:
 
     BinarySearchTree() : root(nullptr), size_(0) {}
     BinarySearchTree(const std::initializer_list<T>& list);
+    BinarySearchTree(BinarySearchTree&& rhs);
+    BinarySearchTree(const BinarySearchTree& tree);
 
     auto size() const noexcept -> size_t;
     bool empty() const;
     auto insert(const T& value) noexcept -> bool;
     auto find(const T& value) const noexcept -> const T*;
 
-    friend std::ostream& operator << (std::ostream& out, const BinarySearchTree<T>& tree){ /*вывод*/
-        if (tree.root)
-            out << "root: " << tree.root;
+    friend auto operator << (std::ofstream& out, const BinarySearchTree<T>& tree) -> std::ofstream& { //прямой
+        out << tree.root;
         return out;
     }
-
-    friend std::istream& operator >> (std::istream& in, BinarySearchTree<T>& tree) { /*ввод*/
-        int n = 1;
-        in >> n; //cчитываем количество элементов
-        for (int i = 0; i < n; i++)
+    friend auto operator << (std::ostream& out, const BinarySearchTree<T>& tree) -> std::ostream& { //симметричный
+        out << tree.root;
+        return out;
+    }
+    friend auto operator >> (std::istream& in, BinarySearchTree<T>& tree) -> std::istream& {
+        size_t n;
+        if (!(in >> n)){
+            std::cerr << "wrong type of number of elements" << std::endl;
+            return in;
+        }
+        //std::cout << "--" << n << "--\n";
+        for (int i = 0; i < n; ++i)
         {
             T value;
-            in >> value;
-            tree.insert(value);
+            if(in >> value)
+                tree.insert(value);
+            else {
+                std::cerr << "wrong input data" << std::endl;
+                return in;
+            }
         }
         return in;
     }
+
+    //friend auto operator >> (std::ifstream& in, BinarySearchTree<T>& tree) -> std::ifstream&{}
+
+    BinarySearchTree& operator = (BinarySearchTree&& rhs){
+        if (this == &rhs)
+            return *this;
+
+        size_ = rhs.size_;
+        rhs.size_ = 0;
+
+        delete root;
+        root = rhs.root;
+        rhs.root = nullptr;
+        return *this;
+    }
+    auto operator = (const BinarySearchTree& tree) -> BinarySearchTree&{
+
+    }
+
+
+
 
     ~BinarySearchTree();
 
@@ -75,6 +118,21 @@ BinarySearchTree<T>::BinarySearchTree(const std::initializer_list<T> &list) : si
     for (auto it = list.begin(); it != list.end(); ++it)
         insert(*it);
 }
+
+template <typename T>
+BinarySearchTree<T>::BinarySearchTree(BinarySearchTree &&rhs) : size_(rhs.size_) {
+    root = rhs.root;
+    rhs.size_ = 0;
+    rhs.root = nullptr;
+}
+
+template <typename T>
+BinarySearchTree<T>::BinarySearchTree(const BinarySearchTree &rhs) : size_(rhs.size_) {
+
+}
+
+
+
 
 template <typename T>
 auto BinarySearchTree<T>::size() const noexcept -> size_t { return size_; }
