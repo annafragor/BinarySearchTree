@@ -141,8 +141,6 @@ bool BinarySearchTree<T>::empty() const {
 template <typename T>
 auto BinarySearchTree<T>::insert(const T &value) noexcept -> bool {
     bool foundPlace = false;
-    if (find(value))
-        return foundPlace;
     if (root == nullptr) {
         root = new Node(value);
         return true;
@@ -150,6 +148,8 @@ auto BinarySearchTree<T>::insert(const T &value) noexcept -> bool {
     Node* thisNode = root;
     while (!foundPlace)
     {
+        if (value == thisNode->value)
+            return false;
         if (value < thisNode->value) {
             if (!thisNode->left) {
                 thisNode->left = new Node(value);
