@@ -35,7 +35,7 @@ int main() {
     
     print(std::cout, bin, "bin");
     
-    std::fstream f("D://!BMSTU//Programming//3semester//BinarySearchTree//examples//file.txt", std::ios::out); //открываем и очищаем файл
+    /*std::fstream f("D://!BMSTU//Programming//3semester//BinarySearchTree//examples//file.txt", std::ios::out); //открываем и очищаем файл
     if (!f.is_open())
     { std::cout << "can't open the file" << std::endl; return 0; }
     print(f, bin, "");
@@ -46,7 +46,7 @@ int main() {
     f.seekg(0, std::ios::beg);
     f >> bout; //прoверка файлового ввода
     std::cout << "read from file: "; // bout; //просмотр того, что считалось из файла
-    print(std::cout, bout, "bout");
+    print(std::cout, bout, "bout");*/
 
     auto list = {1, 2, 3, 4, 5};
     auto newList = {9, 8, 7, 6, 5};
