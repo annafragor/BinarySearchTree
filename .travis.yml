@@ -7,5 +7,5 @@ compiler:
       packages:
         - cmake
 script:
-- mkdir built && cd build && cmake..
-- make
+    - mkdir built && cd build && cmake..
+    - make
