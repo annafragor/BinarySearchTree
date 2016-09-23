@@ -1,1 +1,11 @@
-
+language: cpp
+compiler: 
+    - clang
+    - gcc
+  addons:
+    apt:
+      packages:
+        - cmake
+script:
+- mkdir built && cd build && cmake..
+- make
