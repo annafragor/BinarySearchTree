@@ -1,10 +1,8 @@
-#include <iostream>
-#include <cstring> //для size_t
-#include <fstream>
 #include "../include/BinarySearchTree.h"
 
 template <typename T>
-void print(std::ostream& out, BinarySearchTree<T>& tree, std::string name){
+void print(std::ostream& out, BinarySearchTree<T>& tree, std::string name)
+{
     out << name << ": ";
     if (tree.empty())
         out << "is empty.\n";
@@ -13,8 +11,11 @@ void print(std::ostream& out, BinarySearchTree<T>& tree, std::string name){
     return;
 }
 
-int main() {
-    auto a = {4, 2, 3, 5, 1}; //a - std::initializer_list<int>]
+int main()
+{
+    auto a = {4, 2, 3, 5, 1}; //a - std::initializer_list<int>
+    auto list = {1, 2, 3, 4, 5};
+    auto newList = {9, 8, 10, 6, 7, 5};
     BinarySearchTree<int> b(a);
 
     if(b.find(5))
@@ -32,10 +33,10 @@ int main() {
     BinarySearchTree<int> bin;
     std::cout << "input bin: ";
     std::cin >> bin; //проверка потокового ввода
-    
+
     print(std::cout, bin, "bin");
-    
-    /*std::fstream f("D://!BMSTU//Programming//3semester//BinarySearchTree//examples//file.txt", std::ios::out); //открываем и очищаем файл
+
+    std::fstream f("D://!BMSTU//Programming//3semester//BinarySearchTree//examples//file.txt", std::ios::out); //открываем и очищаем файл
     if (!f.is_open())
     { std::cout << "can't open the file" << std::endl; return 0; }
     print(f, bin, "");
@@ -46,10 +47,8 @@ int main() {
     f.seekg(0, std::ios::beg);
     f >> bout; //прoверка файлового ввода
     std::cout << "read from file: "; // bout; //просмотр того, что считалось из файла
-    print(std::cout, bout, "bout");*/
+    print(std::cout, bout, "bout");
 
-    auto list = {1, 2, 3, 4, 5};
-    auto newList = {9, 8, 7, 6, 5};
     BinarySearchTree<int> b1(list);
     print(std::cout, b1, "b1 before moving");
     BinarySearchTree<int> b2(std::move(b1)); //конструктор перемещения
@@ -66,19 +65,18 @@ int main() {
     print(std::cout, c, "c");
     BinarySearchTree<int> newC(a);
     print(std::cout, newC, "newC");
-    newC = c;
-    print(std::cout, newC, "newC (after copy= of c)");
-
     BinarySearchTree<int> newnewC(newC);
     print(std::cout, newnewC, "newnewC (after move c-tor)");
 
-    if (c == newnewC)
-        std::cout << "c == newnewC" << std::endl;
-    else
-        std::cout << "c != newnewC" << std::endl;
+    newC = c;
+    print(std::cout, newC, "newC (after copy= of c)");
 
-    if (b == c)
-        std::cout << "b == c" << std::endl;
+    if (newC == newnewC)
+        std::cout << "newC == newnewC" << std::endl;
     else
-        std::cout << "b != c" << std::endl;
+        std::cout << "newC != newnewC" << std::endl; // OK
+    if (newC == c)
+        std::cout << "newC == c" << std::endl; // OK
+    else
+        std::cout << "newC != c" << std::endl;
 }
