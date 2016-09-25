@@ -108,7 +108,7 @@ public:
     BinarySearchTree(const BinarySearchTree& tree);
 
     auto size() const noexcept -> size_t;
-    bool empty() const;
+    bool empty() const noexcept;
     auto insert(const T& value) noexcept -> bool;
     auto find(const T& value) const noexcept -> const T*;
 
