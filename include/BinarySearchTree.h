@@ -33,11 +33,13 @@ public:
             if (!right && rhs->right) // аналогично если правой ветки нет
                 right = new Node(rhs->right->value);
 
-            if (left && !rhs->left) { // если левая ветка есть, а ее быть не должно
+            if (left && !rhs->left) // если левая ветка есть, а ее быть не должно
+            {
                 delete left;          // удаляем ее
                 left = nullptr;
             }
-            if (right && !rhs->right) { // аналогично если правая ветка есть, а ее быть не должно
+            if (right && !rhs->right) // аналогично если правая ветка есть, а ее быть не должно
+            {
                 delete right;
                 right = nullptr;
             }
@@ -48,6 +50,26 @@ public:
                 right = right->copy(rhs->right);
 
             return this;
+        }
+
+        auto symmetric(std::ostream& out, std::string lvl) const noexcept -> std::ostream&
+        {
+            if (right)
+                right->symmetric(out, lvl + '-');
+            out << lvl << value << "\n";
+            if (left)
+                left->symmetric(out, lvl + '-');
+            return out;
+        }
+
+        auto direct(std::ofstream& out, std::string lvl) const noexcept -> std::ofstream&
+        {
+            out << lvl << value << "\n";
+            if (left)
+                left->direct(out, lvl + '-');
+            if (right)
+                right->direct(out, lvl + '-');
+            return out;
         }
 
         auto equal(Node* rhs) const noexcept -> bool
@@ -74,24 +96,6 @@ public:
             }
         }
 
-        friend auto operator << (std::ostream& out, const Node* node) -> std::ostream&
-        {
-            if (typeid(out).name() == typeid(std::cout).name()) {
-                if (node->right)
-                    out << node->right;
-                out << node->value << " ";
-                if (node->left)
-                    out << node->left;
-            } else {
-                out << node->value << " ";
-                if (node->left)
-                    out << node->left;
-                if (node->right)
-                    out << node->right;
-            }
-            return out;
-        }
-
         ~Node()
         {
             if (this->left)
@@ -111,9 +115,14 @@ public:
     auto insert(const T& value) noexcept -> bool;
     auto find(const T& value) const noexcept -> const T*;
 
+    friend auto operator << (std::ofstream& out, const BinarySearchTree<T>& tree) -> std::ofstream&
+    {
+        tree.root->direct(out, "");
+        return out;
+    }
     friend auto operator << (std::ostream& out, const BinarySearchTree<T>& tree) -> std::ostream&
-    { //симметричный
-        out << tree.root;
+    {
+        tree.root->symmetric(out, "");
         return out;
     }
     friend auto operator >> (std::istream& in, BinarySearchTree<T>& tree) -> std::istream&
@@ -140,6 +149,7 @@ public:
     auto operator = (BinarySearchTree&& rhs) -> BinarySearchTree&;
     auto operator = (const BinarySearchTree& rhs) -> BinarySearchTree&;
     auto operator == (const BinarySearchTree& rhs) -> bool;
+
 
     ~BinarySearchTree();
 
@@ -174,7 +184,7 @@ template <typename T>
 auto BinarySearchTree<T>::size() const noexcept -> size_t { return size_; }
 
 template <typename T>
-bool BinarySearchTree<T>::empty() const
+auto BinarySearchTree<T>::empty() const noexcept -> bool
 {
     if (size())
         return false;
