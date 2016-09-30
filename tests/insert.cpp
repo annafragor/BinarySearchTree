@@ -10,7 +10,7 @@ SCENARIO("if element already exists => return false")
         {
             THEN("elements can't be repeated")
             {
-                REQURE(!tree.insert(1));
+                REQUIRE(!tree.insert(1));
             }
         }   
     }    
