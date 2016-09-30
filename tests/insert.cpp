@@ -39,7 +39,7 @@ SCENARIO("if inserting element < root->value, add it to the left side of root")
             tree.insert(1);
             THEN("element must be in the root->left")
             {
-                REQUIRE(tree->root->left->value == 1);
+                REQUIRE(tree.root->left->value == 1);
             }
         }
     }   
@@ -54,7 +54,7 @@ SCENARIO("if inserting element > root->value, add it to the right side of root")
             tree.insert(5);
             THEN("element must be in the root->right")
             {
-               REQUIRE(tree->root->right->value == 5);
+               REQUIRE(tree.root->right->value == 5);
             }
         }
     }   
