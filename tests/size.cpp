@@ -2,7 +2,6 @@
 // Created by pca18 on 30.09.16.
 //
 
-#define CATCH_CONFIG_MAIN
 #include "catch.h"
 #include "../include/BinarySearchTree.h"
 
