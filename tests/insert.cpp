@@ -34,12 +34,13 @@ SCENARIO("if inserting element < root->value, add it to the left side of root")
     GIVEN("some tree")
     {
         BinarySearchTree<int> tree{3, 5};
+        BinarySearchTree<int> tree2{3, 1, 5};
         WHEN("insert element")
         {
             tree.insert(1);
             THEN("element must be in the root->left")
             {
-                REQUIRE(tree.root->left->value == 1);
+                REQUIRE(tree == tree2);
             }
         }
     }   
@@ -49,12 +50,13 @@ SCENARIO("if inserting element > root->value, add it to the right side of root")
     GIVEN("some tree")
     {
         BinarySearchTree<int> tree{3, 1};
+        BinarySearchTree<int> tree2{3, 1, 5};
         WHEN("insert element")
         {
             tree.insert(5);
             THEN("element must be in the root->right")
             {
-               REQUIRE(tree.root->right->value == 5);
+               REQUIRE(tree == tree2);
             }
         }
     }   
