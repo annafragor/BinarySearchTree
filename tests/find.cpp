@@ -39,7 +39,7 @@ SCENARIO("this method must work for constant tree and for non-constant tree")
         {
             THEN("method find works both for constant and non-constant tree")
             {
-                REQUIRE((tree1.find(2) != nullptr) && (tree2.find(5) != nullptr));
+                REQUIRE((tree1.find(2) != nullptr) & (tree2.find(5) != nullptr));
             }
         }
     }
