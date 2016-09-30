@@ -3,7 +3,7 @@
 //
 
 #include "../include/BinarySearchTree.h"
-#include "catch.h"
+#include "catch.hpp"
 
 SCENARIO( "size of empty tree must be equal to 0")
 {
