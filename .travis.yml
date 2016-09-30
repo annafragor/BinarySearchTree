@@ -8,5 +8,5 @@ addons:
 script:
     - mkdir build && cd build && cmake ..
     - make
-    - Tests -s -r compact
+    - Tests -r compact -s
     
