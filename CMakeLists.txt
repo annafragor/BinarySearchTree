@@ -1,7 +1,11 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.7)
 project(BinarySearchTree)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES source/BinarySearchTree.cpp include/BinarySearchTree.h)
-add_executable(BinarySearchTree ${SOURCE_FILES} examples/main.cpp )
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/ /tests/)
+
+add_library(BinarySearchTree STATIC ${CMAKE_CURRENT_SOURCE_DIR}/source/BinarySearchTree.cpp )
+
+add_executable(Examples ${CMAKE_CURRENT_SOURCE_DIR} examples/main.cpp)
+add_executable(Tests ${TESTS_SOURCE} tests/size.cpp tests/main.cpp)
