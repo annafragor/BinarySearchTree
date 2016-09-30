@@ -2,8 +2,8 @@
 // Created by pca18 on 30.09.16.
 //
 
-#include "catch.h"
 #include "../include/BinarySearchTree.h"
+#include "catch.h"
 
 SCENARIO( "size of empty tree must be equal to 0")
 {
