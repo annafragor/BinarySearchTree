@@ -3,7 +3,7 @@
 template <typename T>
 void print(std::ostream& out, BinarySearchTree<T>& tree, std::string name)
 {
-    out << name << ": ";
+    out << name << ": \n";
     if (tree.empty())
         out << "is empty.\n";
     else
@@ -89,4 +89,12 @@ int main()
         std::cout << "newC == c" << std::endl; // OK
     else
         std::cout << "newC != c" << std::endl;
+
+    auto forRemove = {20, 10, 26, 24, 27, 22, 21, 23, 25};
+    BinarySearchTree<int> forR(forRemove);
+    print(std::cout, forR, "forR");
+    forR.remove(24);
+    print(std::cout, forR, "forR after remove(24)");
+    if (!forR.remove(12))
+        std::cout << "12 doesn't exist in forR" << std::endl;
 }
