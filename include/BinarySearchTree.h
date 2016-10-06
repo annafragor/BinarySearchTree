@@ -44,7 +44,7 @@ public:
             return out;
         }
 
-        auto equal(std::shared_ptr<Node>& rhs) const noexcept -> bool
+        auto equal(const std::shared_ptr<Node>& rhs) const noexcept -> bool
         {
             // если какая-либо ветка существует, а соответствующая в другом дереве - нет,
             // возвращаем false
