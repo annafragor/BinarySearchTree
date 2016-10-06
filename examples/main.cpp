@@ -95,6 +95,6 @@ int main()
     print(std::cout, forR, "forR");
     forR.remove(24);
     print(std::cout, forR, "forR after remove(24)");
-    if (!forR.remove(12))
-        std::cout << "12 doesn't exist in forR" << std::endl;
+    //if (!forR.remove(1))
+      //  std::cout << "12 doesn't exist in forR" << std::endl;
 }

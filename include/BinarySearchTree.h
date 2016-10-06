@@ -95,7 +95,7 @@ public:
                     std::shared_ptr<Node> newRight = thisNode->right;
                     thisNode = thisNode->left;
                     std::shared_ptr<Node> newThisNode = thisNode;
-                    while (!newThisNode->left && !newThisNode->right)
+                    while (newThisNode->right)
                         newThisNode = newThisNode->right;
                     newThisNode->right = newRight;
                     return true;
