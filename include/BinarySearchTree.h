@@ -1,7 +1,6 @@
 //
 // Created by ANNA on 17.09.2016.
 //
-//
 
 #ifndef BINARYSEARCHTREE_BINARYSEARCHTREE_H
 #define BINARYSEARCHTREE_BINARYSEARCHTREE_H
@@ -77,17 +76,30 @@ public:
                 remove(value_, thisNode->left);
             if (value_ > thisNode->value)
                 remove(value_, thisNode->right);
-            if (value_ == thisNode->value)
+            if (value_ == thisNode->value) // если нашли нужный элемент
             {
-                std::shared_ptr<Node> newRight = thisNode->right;
-                thisNode = thisNode->left;
-                std::shared_ptr<Node> newThisNode = thisNode;
-                while (!newThisNode->left && !newThisNode->right)
+                if (!thisNode->left && !thisNode->right) // если это последний лист
                 {
-                    newThisNode = newThisNode->right;
+                    thisNode = nullptr;  // удаляем его
+                    return true;
+                } else if (thisNode->left && !thisNode->right) // если есть путь налево, но нет направо
+                {
+                    thisNode = thisNode->left;
+                    return true;
+                } else if (!thisNode->left && thisNode->right) // если есть путь направо, но нет налево
+                {
+                    thisNode = thisNode->right;
+                    return true;
+                } else // если оба пути существуют
+                {
+                    std::shared_ptr<Node> newRight = thisNode->right;
+                    thisNode = thisNode->left;
+                    std::shared_ptr<Node> newThisNode = thisNode;
+                    while (!newThisNode->left && !newThisNode->right)
+                        newThisNode = newThisNode->right;
+                    newThisNode->right = newRight;
+                    return true;
                 }
-                newThisNode->right = newRight;
-                return true;
             }
         }
 
@@ -184,7 +196,6 @@ BinarySearchTree<T>::BinarySearchTree(const std::initializer_list<T> &list) : si
 template <typename T>
 BinarySearchTree<T>::BinarySearchTree(BinarySearchTree &&rhs) : size_(rhs.size_), root(rhs.root)
 {
-    //root = rhs.root;
     rhs.size_ = 0;
     rhs.root = nullptr;
 }
