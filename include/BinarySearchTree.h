@@ -44,7 +44,7 @@ public:
             return out;
         }
 
-        auto equal(const std::shared_ptr<Node>& rhs) const noexcept -> bool
+        auto equal(std::shared_ptr<Node> rhs) const noexcept -> bool
         {
             // если какая-либо ветка существует, а соответствующая в другом дереве - нет,
             // возвращаем false
@@ -91,7 +91,7 @@ public:
             }
         }
 
-        friend auto copy(std::shared_ptr<Node>& lhs, std::shared_ptr<Node>& rhs) -> std::shared_ptr<Node>
+        friend auto copy(std::shared_ptr<Node> lhs, std::shared_ptr<Node> rhs) -> std::shared_ptr<Node>
         {
             if (lhs->value != rhs->value) // если данные узлы не равны
                 lhs->value = rhs->value;  // делаем их равными
