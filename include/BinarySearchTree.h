@@ -67,15 +67,15 @@ public:
             }
         }
 
-        auto remove(const T& value_, std::shared_ptr<Node>& thisNode) noexcept ->  bool
+        static auto remove(const T& value_, std::shared_ptr<Node>& thisNode) noexcept ->  bool
         {
             if (!thisNode)
                 return false;
 
             if (value_ < thisNode->value)
-                remove(value_, thisNode->left);
+                Node::remove(value_, thisNode->left);
             if (value_ > thisNode->value)
-                remove(value_, thisNode->right);
+                Node::remove(value_, thisNode->right);
             if (value_ == thisNode->value) // если нашли нужный элемент
             {
                 if (!thisNode->left && !thisNode->right) // если это последний лист
@@ -282,7 +282,7 @@ auto BinarySearchTree<T>::remove(const T& value) noexcept -> bool
 {
     bool foundValue = false;
     if (root)
-        foundValue = root->remove(value, root);
+        foundValue = Node::remove(value, root);
     else
         return false;
     if (foundValue)
