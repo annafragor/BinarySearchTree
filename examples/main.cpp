@@ -47,16 +47,16 @@ int main()
 
     print(std::cout, bin, "bin");
 
-    std::ofstream fout("D://!BMSTU//Programming//3semester//BinarySearchTree//examples//file.txt", std::ios::out); //открываем и очищаем файл
+    std::ofstream fout("file.txt", std::ios::out); //открываем и очищаем файл
     if (!fout.is_open())
     { std::cout << "can't open the file" << std::endl; return 0; }
     print(fout, bin, "bin");
 
     BinarySearchTree<int> bout;
-    std::ifstream fin("D://!BMSTU//Programming//3semester//BinarySearchTree//examples//file2.txt", std::ios::in);
+    std::ifstream fin("file2.txt", std::ios::in);
     fin.seekg(0, std::ios::beg);
     fin >> bout; //прoверка файлового ввода
-    std::cout << "read from file: "; // bout; //просмотр того, что считалось из файла
+    std::cout << "read from file2: "; // bout; //просмотр того, что считалось из файла
     print(std::cout, bout, "bout");
 
     BinarySearchTree<int> b1(list);
