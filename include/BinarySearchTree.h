@@ -73,9 +73,9 @@ public:
                 return false;
 
             if (value_ < thisNode->value)
-                Node::remove(value_, thisNode->left);
+                remove(value_, thisNode->left);
             if (value_ > thisNode->value)
-                Node::remove(value_, thisNode->right);
+                remove(value_, thisNode->right);
             if (value_ == thisNode->value) // если нашли нужный элемент
             {
                 if (!thisNode->left && !thisNode->right) // если это последний лист
@@ -103,7 +103,7 @@ public:
             }
         }
 
-        friend auto copy(std::shared_ptr<Node> lhs, std::shared_ptr<Node> rhs) -> std::shared_ptr<Node>
+        static auto copy(std::shared_ptr<Node> lhs, std::shared_ptr<Node> rhs) -> std::shared_ptr<Node>
         {
             if (lhs->value != rhs->value) // если данные узлы не равны
                 lhs->value = rhs->value;  // делаем их равными
@@ -203,7 +203,7 @@ BinarySearchTree<T>::BinarySearchTree(BinarySearchTree &&rhs) : size_(rhs.size_)
 template <typename T>
 BinarySearchTree<T>::BinarySearchTree(const BinarySearchTree &rhs) : size_(rhs.size_), root(std::make_shared<Node>(0))
 {
-    root = copy(root, rhs.root);
+    root = Node::copy(root, rhs.root);
 }
 
 template <typename T>
@@ -314,7 +314,7 @@ auto BinarySearchTree<T>::operator=(const BinarySearchTree &rhs) -> BinarySearch
 
     size_ = rhs.size_;
     std::cerr << "ok\n";
-    root = copy(root, rhs.root);
+    root = Node::copy(root, rhs.root);
     std::cerr << "ok2\n";
     return *this;
 }
