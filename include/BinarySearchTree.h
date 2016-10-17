@@ -140,7 +140,7 @@ public:
 
     auto size() const noexcept -> size_t;
     bool empty() const noexcept;
-    auto insert(const T& value) noexcept -> bool;
+    auto insert(const T& value) -> bool;
     auto find(const T& value) const noexcept -> const T*;
     auto remove(const T& value) noexcept -> bool;
 
