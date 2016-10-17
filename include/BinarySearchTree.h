@@ -68,10 +68,11 @@ public:
             }
         }
 
-        static auto remove(const T& value_, std::shared_ptr<Node>& thisNode) noexcept ->  bool
+        static auto remove(const T& value_, std::shared_ptr<Node>& thisNode) ->  bool
         {
             if (!thisNode)
-                return false;
+                //return false;
+                throw std::invalid_argument("such element wasn't found");
 
             if (value_ < thisNode->value)
                 remove(value_, thisNode->left);
@@ -143,7 +144,7 @@ public:
     bool empty() const noexcept;
     auto insert(const T& value) -> bool;
     auto find(const T& value) const -> const T*;
-    auto remove(const T& value) noexcept -> bool;
+    auto remove(const T& value) -> bool;
 
     friend auto operator << (std::ofstream& out, const BinarySearchTree<T>& tree) -> std::ofstream&
     {
@@ -232,8 +233,7 @@ auto BinarySearchTree<T>::insert(const T& value) -> bool try
     while (!foundPlace)
     {
         if (value == thisNode->value)
-//          return false;
-	    throw std::invalid_argument("such element already exists.");
+	        throw std::invalid_argument("such element already exists.");
         if (value < thisNode->value)
         {
             if (!thisNode->left)
@@ -263,48 +263,47 @@ template <typename T>
 auto BinarySearchTree<T>::find(const T& value) const -> const T* try
 {
     if (!root)
-        //return nullptr;
-	throw std::invalid_argument("your tree is empty.");
+	    throw std::invalid_argument("your tree is empty.");
     std::shared_ptr<Node> thisNode = root;
     while(1)
     {
         if (value == thisNode->value)
             return &thisNode->value;
         else if (value < thisNode->value)
-	{
+	    {
             if (thisNode->left)
                 thisNode = thisNode->left;
             else
-                //return nullptr;
-		throw std::invalid_argument("element wasn't found");
-	}
-        else
-	{
+		        throw std::invalid_argument("such element wasn't found.");
+	    } else
+        {
             if (thisNode->right)
                 thisNode = thisNode->right;
             else
-                return nullptr;
+                throw std::invalid_argument("such element wasn't found.");
         }
     }
 }
 catch(std::logic_error& err)
 {
-	std::cerr << "BinarySearchTree::find(const T& value) threw an exception" << std::endl;
-        std::cerr << err.what() << std::endl;
+	std::cerr << "BinarySearchTree::find(" << value << ") threw an exception" << std::endl;
+    std::cerr << err.what() << std::endl;
 	return nullptr;
 }
 
 template <typename T>
-auto BinarySearchTree<T>::remove(const T& value) noexcept -> bool
+auto BinarySearchTree<T>::remove(const T& value) -> bool try
 {
-    bool foundValue = false;
     if (root)
-        foundValue = Node::remove(value, root);
-    else
-        return false;
-    if (foundValue)
-        size_--;
-    return foundValue;
+        Node::remove(value, root);
+    size_--;
+    return true;
+}
+catch(std::logic_error& err)
+{
+    std::cerr << "BinarySearchTree::remove(" << value <<  ") threw an exception" << std::endl;
+    std::cerr << err.what() << std::endl;
+    return false;
 }
 
 template <typename T>
@@ -316,8 +315,6 @@ auto BinarySearchTree<T>::operator=(BinarySearchTree &&rhs) -> BinarySearchTree&
     size_ = rhs.size_;
     rhs.size_ = 0;
 
-    //delete root;
-    //root->~Node();
     root = rhs.root;
     rhs.root = nullptr;
     return *this;
