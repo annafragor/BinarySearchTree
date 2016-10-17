@@ -31,19 +31,26 @@ int main()
     auto newList = {9, 8, 10, 6, 7, 5};
     BinarySearchTree<int> b(a);
 
-    if(b.find(5))
-        std::cout << "such value as 5 was found." << std::endl;
-    if(b.find(8))
-        std::cout << "such value as 8 was found." << std::endl; //such value as 8 wasn't found.
-    print(std::cout, b, "b");
+//    if(b.find(5))
+//        std::cout << "such value as 5 was found." << std::endl;
+//    if(b.find(8))
+//        std::cout << "such value as 8 was found." << std::endl; //such value as 8 wasn't found.
+//    print(std::cout, b, "b");
 
-    if (b.insert(4))
+/*    if (b.insert(4))
         std::cout << "4 was inserted" << std::endl; //не выводит, тк элемент 4 уже есть
     if (b.insert(10))
         std::cout << "10 was inserted" << std::endl;
-    print(std::cout, b, "b");
+    print(std::cout, b, "b");*/
+    std::cout << "inserting 4: " << std::endl;
+    b.insert(4);
+    std::cout << "\ninserting 10: " << std::endl;
+    b.insert(10);
+    if (!b.insert(1))
+	std::cout << "!" << std::endl;
 
-    BinarySearchTree<int> bin;
+
+/*    BinarySearchTree<int> bin;
     std::cout << "input bin: ";
     std::cin >> bin; //проверка потокового ввода
 
@@ -99,4 +106,5 @@ int main()
     print(std::cout, forR, "forR after remove(20)");
     if (!forR.remove(12))
         std::cout << "12 doesn't exist in forR" << std::endl;
+*/
 }

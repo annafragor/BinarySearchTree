@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include <exception>
 
 template <typename T>
 class BinarySearchTree
@@ -141,7 +142,7 @@ public:
     auto size() const noexcept -> size_t;
     bool empty() const noexcept;
     auto insert(const T& value) -> bool;
-    auto find(const T& value) const noexcept -> const T*;
+    auto find(const T& value) const -> const T*;
     auto remove(const T& value) noexcept -> bool;
 
     friend auto operator << (std::ofstream& out, const BinarySearchTree<T>& tree) -> std::ofstream&
@@ -219,11 +220,11 @@ auto BinarySearchTree<T>::empty() const noexcept -> bool
 }
 
 template <typename T>
-auto BinarySearchTree<T>::insert(const T& value) noexcept -> bool
+auto BinarySearchTree<T>::insert(const T& value) -> bool try
 {
     bool foundPlace = false;
-    if (root == nullptr) {
-        //root = std::shared_ptr<Node>(new Node(value))
+    if (root == nullptr)
+    {
         root = std::make_shared<Node>(value);
         return true;
     }
@@ -231,7 +232,8 @@ auto BinarySearchTree<T>::insert(const T& value) noexcept -> bool
     while (!foundPlace)
     {
         if (value == thisNode->value)
-            return false;
+//          return false;
+	    throw std::invalid_argument("such element already exists.");
         if (value < thisNode->value)
         {
             if (!thisNode->left)
@@ -250,31 +252,46 @@ auto BinarySearchTree<T>::insert(const T& value) noexcept -> bool
     size_++;
     return foundPlace;
 }
+catch(std::exception& err)
+{
+	std::cerr << "BinarySearchTree::insert(" << value <<  ") threw an exception" << std::endl;
+	std::cerr << err.what() << std::endl;
+	return false;
+}
 
 template <typename T>
-auto BinarySearchTree<T>::find(const T& value) const noexcept -> const T*
+auto BinarySearchTree<T>::find(const T& value) const -> const T* try
 {
     if (!root)
-        return nullptr;
+        //return nullptr;
+	throw std::invalid_argument("your tree is empty.");
     std::shared_ptr<Node> thisNode = root;
     while(1)
     {
-        if (value == thisNode->value) {
+        if (value == thisNode->value)
             return &thisNode->value;
-        }
         else if (value < thisNode->value)
+	{
             if (thisNode->left)
                 thisNode = thisNode->left;
-            else {
-                return nullptr;
-            }
-        else {
+            else
+                //return nullptr;
+		throw std::invalid_argument("element wasn't found");
+	}
+        else
+	{
             if (thisNode->right)
                 thisNode = thisNode->right;
             else
                 return nullptr;
         }
     }
+}
+catch(std::logic_error& err)
+{
+	std::cerr << "BinarySearchTree::find(const T& value) threw an exception" << std::endl;
+        std::cerr << err.what() << std::endl;
+	return nullptr;
 }
 
 template <typename T>
