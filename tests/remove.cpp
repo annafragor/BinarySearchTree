@@ -10,7 +10,21 @@ SCENARIO("if we want to delete an element, that doesn't exist - return false")
 		{
 			THEN("such element doesn't exist in the tree")
 			{
-				REQUIRE(!tree.remove(5));
+				REQUIRE_FALSE(tree.remove(5));
+			}
+		}
+	}
+}
+SCENARIO("if we want to delete an element, that doesn't exist - throw an exception")
+{
+	GIVEN("some tree")
+	{
+		BinarySearchTree<int> tree{1, 2, 3};
+		WHEN("remove element")
+		{
+			THEN("throw an exception")
+			{
+				REQUIRE_THROWS_AS(tree.remove(5), BinarySearchTree<int>::bad_argument);
 			}
 		}
 	}

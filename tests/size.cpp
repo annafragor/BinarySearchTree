@@ -28,7 +28,7 @@ SCENARIO("size of non-empty tree mustn't be equal to 0")
         {
             THEN("size must be not equal to 0")
             {
-                REQUIRE(tree.size() != 0);
+                REQUIRE_FALSE(tree.size() == 0);
             }
         }
     }

@@ -1,5 +1,6 @@
 #include "../include/BinarySearchTree.h"
 #include "catch.hpp"
+#include <stdexcept>
 
 SCENARIO("if element already exists => return false")
 {
@@ -10,7 +11,7 @@ SCENARIO("if element already exists => return false")
         {
             THEN("elements can't be repeated")
             {
-                REQUIRE(!tree.insert(1));
+                REQUIRE_FALSE(tree.insert(1));
             }
         }   
     }    
@@ -61,6 +62,22 @@ SCENARIO("if inserting element > root->value, add it to the right side of root")
         }
     }   
 }
+SCENARIO("if element doesn't exist, size must increase")
+{
+    GIVEN("some tree")
+    {
+        BinarySearchTree<int> tree{1, 3, 5, 7};
+        size_t size = tree.size();
+        WHEN("insert element")
+        {
+            tree.insert(8);
+            THEN("newSize == sizeBeforeInserting + 1")
+            {
+                REQUIRE(tree.size() == size + 1);
+            }
+        }
+    }
+}
 SCENARIO("if element already exists, size must stay constant")
 {
     GIVEN("some tree")
@@ -77,18 +94,16 @@ SCENARIO("if element already exists, size must stay constant")
         }
     }
 }
-SCENARIO("if element doesn't exist, size must increase")
+SCENARIO("if element already exists, insert() must throw an exception")
 {
     GIVEN("some tree")
     {
         BinarySearchTree<int> tree{1, 3, 5, 7};
-        size_t size = tree.size();
-        WHEN("insert element")
+        WHEN("insert existing element")
         {
-            tree.insert(8);
-            THEN("newSize == sizeBeforeInserting + 1")
+            THEN("exception is thrown")
             {
-                REQUIRE(tree.size() == size + 1);
+                REQUIRE_THROWS_AS(tree.insert(1), BinarySearchTree<int>::bad_argument);
             }
         }
     }

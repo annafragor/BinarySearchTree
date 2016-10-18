@@ -15,6 +15,34 @@ SCENARIO("if element doesn't exist in the tree, return nullptr")
         }
     }
 }
+SCENARIO("if element doesn't exist in the tree, throw an exception")
+{
+    GIVEN("some tree")
+    {
+        BinarySearchTree<int> tree{1, 2, 3, 4};
+        WHEN("looking for element, that doesn't exist")
+        {
+            THEN("throw an exception")
+            {
+                REQUIRE_THROWS_AS(tree.find(7), BinarySearchTree<int>::bad_argument);
+            }
+        }
+    }
+}
+SCENARIO("if tree is empty, throw an exception")
+{
+    GIVEN("empty tree")
+    {
+        BinarySearchTree<int> tree{};
+        WHEN("looking for element in empty tree")
+        {
+            THEN("throw an exception")
+            {
+                REQUIRE_THROWS_AS(tree.find(1), BinarySearchTree<int>::bad_argument);
+            }
+        }
+    }
+}
 SCENARIO("if element already exists in the tree, return pointer to this element")
 {
     GIVEN("some tree")

@@ -77,7 +77,7 @@ public:
         static auto remove(const T& value_, std::shared_ptr<Node>& thisNode) ->  bool
         {
             if (!thisNode)
-                throw bad_argument("such element wasn't found");
+                return false;
 
             if (value_ < thisNode->value)
                 remove(value_, thisNode->left);
@@ -238,7 +238,7 @@ auto BinarySearchTree<T>::insert(const T& value) -> bool try
     while (!foundPlace)
     {
         if (value == thisNode->value)
-	        throw bad_argument("such element already exists.");
+	        throw BinarySearchTree<T>::bad_argument("such element already exists.");
         if (value < thisNode->value)
         {
             if (!thisNode->left)
@@ -257,7 +257,7 @@ auto BinarySearchTree<T>::insert(const T& value) -> bool try
     size_++;
     return foundPlace;
 }
-catch(bad_argument& err)
+catch(BinarySearchTree<T>::bad_argument& err)
 {
 	std::cerr << "BinarySearchTree::insert(" << value <<  ") threw an exception" << std::endl;
 	std::cerr << err.what() << std::endl;
@@ -268,7 +268,7 @@ template <typename T>
 auto BinarySearchTree<T>::find(const T& value) const -> const T* try
 {
     if (!root)
-	    throw bad_argument("your tree is empty.");
+	    throw BinarySearchTree<T>::bad_argument("your tree is empty.");
     std::shared_ptr<Node> thisNode = root;
     while(1)
     {
@@ -289,7 +289,7 @@ auto BinarySearchTree<T>::find(const T& value) const -> const T* try
         }
     }
 }
-catch(bad_argument& err)
+catch(BinarySearchTree<T>::bad_argument& err)
 {
 	std::cerr << "BinarySearchTree::find(" << value << ") threw an exception" << std::endl;
     std::cerr << err.what() << std::endl;
@@ -299,12 +299,19 @@ catch(bad_argument& err)
 template <typename T>
 auto BinarySearchTree<T>::remove(const T& value) -> bool try
 {
+    bool foundValue = false;
     if (root)
-        Node::remove(value, root);
-    size_--;
-    return true;
+        foundValue = Node::remove(value, root);
+    else
+        throw BinarySearchTree<T>::bad_argument("your tree is empty");
+    if (foundValue)
+    {
+        size_--;
+        return true;
+    } else
+        throw BinarySearchTree<T>::bad_argument("such element wasn't found");
 }
-catch(bad_argument& err)
+catch(BinarySearchTree<T>::bad_argument& err)
 {
     std::cerr << "BinarySearchTree::remove(" << value <<  ") threw an exception" << std::endl;
     std::cerr << err.what() << std::endl;
