@@ -14,6 +14,12 @@ template <typename T>
 class BinarySearchTree
 {
 public:
+    class bad_argument : public std::logic_error
+    {
+    public:
+        bad_argument(const std::string& data = "") : logic_error(data) {}
+    };
+
     struct Node
     {
         std::shared_ptr<Node> left;
@@ -71,8 +77,7 @@ public:
         static auto remove(const T& value_, std::shared_ptr<Node>& thisNode) ->  bool
         {
             if (!thisNode)
-                //return false;
-                throw std::invalid_argument("such element wasn't found");
+                throw bad_argument("such element wasn't found");
 
             if (value_ < thisNode->value)
                 remove(value_, thisNode->left);
@@ -233,7 +238,7 @@ auto BinarySearchTree<T>::insert(const T& value) -> bool try
     while (!foundPlace)
     {
         if (value == thisNode->value)
-	        throw std::invalid_argument("such element already exists.");
+	        throw bad_argument("such element already exists.");
         if (value < thisNode->value)
         {
             if (!thisNode->left)
@@ -252,7 +257,7 @@ auto BinarySearchTree<T>::insert(const T& value) -> bool try
     size_++;
     return foundPlace;
 }
-catch(std::exception& err)
+catch(bad_argument& err)
 {
 	std::cerr << "BinarySearchTree::insert(" << value <<  ") threw an exception" << std::endl;
 	std::cerr << err.what() << std::endl;
@@ -263,7 +268,7 @@ template <typename T>
 auto BinarySearchTree<T>::find(const T& value) const -> const T* try
 {
     if (!root)
-	    throw std::invalid_argument("your tree is empty.");
+	    throw bad_argument("your tree is empty.");
     std::shared_ptr<Node> thisNode = root;
     while(1)
     {
@@ -274,17 +279,17 @@ auto BinarySearchTree<T>::find(const T& value) const -> const T* try
             if (thisNode->left)
                 thisNode = thisNode->left;
             else
-		        throw std::invalid_argument("such element wasn't found.");
+		        throw bad_argument("such element wasn't found.");
 	    } else
         {
             if (thisNode->right)
                 thisNode = thisNode->right;
             else
-                throw std::invalid_argument("such element wasn't found.");
+                throw bad_argument("such element wasn't found.");
         }
     }
 }
-catch(std::logic_error& err)
+catch(bad_argument& err)
 {
 	std::cerr << "BinarySearchTree::find(" << value << ") threw an exception" << std::endl;
     std::cerr << err.what() << std::endl;
@@ -299,7 +304,7 @@ auto BinarySearchTree<T>::remove(const T& value) -> bool try
     size_--;
     return true;
 }
-catch(std::logic_error& err)
+catch(bad_argument& err)
 {
     std::cerr << "BinarySearchTree::remove(" << value <<  ") threw an exception" << std::endl;
     std::cerr << err.what() << std::endl;
