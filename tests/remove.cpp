@@ -24,7 +24,7 @@ SCENARIO("if we want to delete an element, that doesn't exist - throw an excepti
 		{
 			THEN("throw an exception")
 			{
-				REQUIRE_THROWS_AS(tree.remove(5), BinarySearchTree<int>::bad_argument);
+                REQUIRE_NOTHROW(tree.remove(5));
 			}
 		}
 	}

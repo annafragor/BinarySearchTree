@@ -24,7 +24,7 @@ SCENARIO("if element doesn't exist in the tree, throw an exception")
         {
             THEN("throw an exception")
             {
-                REQUIRE_THROWS_AS(tree.find(7), BinarySearchTree<int>::bad_argument);
+                REQUIRE_NOTHROW(tree.find(7));
             }
         }
     }
@@ -38,7 +38,7 @@ SCENARIO("if tree is empty, throw an exception")
         {
             THEN("throw an exception")
             {
-                REQUIRE_THROWS_AS(tree.find(1), BinarySearchTree<int>::bad_argument);
+                REQUIRE_NOTHROW(tree.find(1));
             }
         }
     }
