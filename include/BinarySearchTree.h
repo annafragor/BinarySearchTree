@@ -147,9 +147,9 @@ public:
 
     auto size() const noexcept -> size_t;
     bool empty() const noexcept;
-    auto insert(const T& value) -> bool;
-    auto find(const T& value) const -> const T*;
-    auto remove(const T& value) -> bool;
+    auto insert(const T& value) noexcept -> bool;
+    auto find(const T& value) const noexcept -> const T*;
+    auto remove(const T& value) noexcept -> bool;
 
     friend auto operator << (std::ofstream& out, const BinarySearchTree<T>& tree) -> std::ofstream&
     {
@@ -226,7 +226,7 @@ auto BinarySearchTree<T>::empty() const noexcept -> bool
 }
 
 template <typename T>
-auto BinarySearchTree<T>::insert(const T& value) -> bool try
+auto BinarySearchTree<T>::insert(const T& value) noexcept -> bool try
 {
     bool foundPlace = false;
     if (root == nullptr)
@@ -265,7 +265,7 @@ catch(BinarySearchTree<T>::bad_argument& err)
 }
 
 template <typename T>
-auto BinarySearchTree<T>::find(const T& value) const -> const T* try
+auto BinarySearchTree<T>::find(const T& value) const noexcept -> const T* try
 {
     if (!root)
 	    throw BinarySearchTree<T>::bad_argument("your tree is empty.");
@@ -297,7 +297,7 @@ catch(BinarySearchTree<T>::bad_argument& err)
 }
 
 template <typename T>
-auto BinarySearchTree<T>::remove(const T& value) -> bool try
+auto BinarySearchTree<T>::remove(const T& value) noexcept -> bool try
 {
     bool foundValue = false;
     if (root)
