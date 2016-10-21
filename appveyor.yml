@@ -8,10 +8,6 @@ environment:
 
 configuration:
      - plain
-#      - shared
-
-# install:
-#   - set INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\build
 
 before_build:
     - ps: >-
@@ -23,7 +19,6 @@ before_build:
     - ps: $env:VSCOMNTOOLS=(Get-Content ("env:VS" + "$env:VSVER" + "0COMNTOOLS"))
     - call "%VSCOMNTOOLS%\..\..\VC\vcvarsall.bat" %VCVARS_PLATFORM%
    
-
 build_script:
   - mkdir build
   - cd build
