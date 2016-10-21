@@ -1,0 +1,34 @@
+platform:
+    - x86
+    - x64
+
+environment:
+    matrix:
+        - VSVER: 14
+
+# configuration:
+#     - plain
+#      - shared
+
+# install:
+#   - set INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\build
+
+before_build:
+    - ps: >-
+        If ($env:Platform -Match "x86") {
+            $env:VCVARS_PLATFORM="x86"
+        } Else {
+            $env:VCVARS_PLATFORM="amd64"
+        }
+    - ps: $env:VSCOMNTOOLS=(Get-Content ("env:VS" + "$env:VSVER" + "0COMNTOOLS"))
+    - call "%VSCOMNTOOLS%\..\..\VC\vcvarsall.bat" %VCVARS_PLATFORM%
+   
+
+build_script:
+  - mkdir build
+  - cd build
+  - cmake .. -G "NMake Makefiles"
+  
+  # msbuild если визуалка, где -G "VisualStudio.... ????"
+  - nmake
+  - nmake install
