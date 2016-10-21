@@ -3,7 +3,7 @@
 template <typename T>
 void print(std::ostream& out, BinarySearchTree<T>& tree, std::string name)
 {
-    out << name << ": \n";
+    out << name.c_str() << ": \n";
     if (tree.empty())
         out << "is empty.\n";
     else
@@ -14,7 +14,7 @@ void print(std::ostream& out, BinarySearchTree<T>& tree, std::string name)
 template <typename T>
 void print(std::ofstream& out, BinarySearchTree<T>& tree, std::string name)
 {
-    out << name << ": ";
+    out << name.c_str() << ": ";
     if (tree.empty())
         out << "is empty.\n";
     else
