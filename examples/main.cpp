@@ -1,4 +1,5 @@
 #include "../include/BinarySearchTree.h"
+#include <string>
 
 template <typename T>
 void print(std::ostream& out, BinarySearchTree<T>& tree, std::string name)
