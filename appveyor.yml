@@ -6,8 +6,8 @@ environment:
     matrix:
         - VSVER: 14
 
-# configuration:
-#     - plain
+configuration:
+     - plain
 #      - shared
 
 # install:
