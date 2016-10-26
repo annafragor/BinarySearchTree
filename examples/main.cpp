@@ -1,6 +1,7 @@
 #include "../include/BinarySearchTree.h"
 #include <string>
 
+
 template <typename T>
 void print(std::ostream& out, BinarySearchTree<T>& tree, std::string name)
 {
@@ -98,4 +99,5 @@ int main()
     print(std::cout, forR, "forR after remove(20)");
     if (!forR.remove(12))
         std::cout << "12 doesn't exist in forR" << std::endl;
+    return 0;
 }
